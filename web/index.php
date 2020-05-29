@@ -18,7 +18,7 @@
 
 require_once('./LINEBotTiny.php');
 
-
+require_once('./message.php');
 
 $channelAccessToken = getenv('LINE_CHANNEL_ACCESSTOKEN');
 $channelSecret = getenv('LINE_CHANNEL_SECRET');
@@ -35,17 +35,27 @@ foreach ($client->parseEvents() as $event) {
                 	{
                 		$client->replyMessage(array(
                         'replyToken' => $event['replyToken'],
-                        'messages' => array(
-                            array(
-                                'type' => 'text',
-                                'text' => $m_message
-                            )
-                        )
+                        'messages' => GREETING_MESSAGE
                     	));
                 	}
-                    break;
-                
+                    break;   
             }
+            break;
+        case 'postback': 
+            $postback = $event['postback'];
+            $data = $postback['data'];
+            $displayText = $postback['displayText'];
+            if ($data = 'paypal' or $displayText = 'paypal' ) {
+                $client->replyMessage(array(
+                    'replyToken' => $event['replyToken'],
+                    'messages' => PAYPAL
+                ));
+            } elseif ($data = 'webmoney' or $displayText = 'webmoney' ) {
+                $client->replyMessage(array(
+                    'replyToken' => $event['replyToken'],
+                    'messages' => WEB_MONEY
+                ));
+            } 
             break;
         default:
             error_log("Unsupporeted event type: " . $event['type']);
