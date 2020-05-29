@@ -19,6 +19,7 @@
 require_once('./LINEBotTiny.php');
 
 require_once('./message.php');
+require_once('./message_2.php');
 
 $channelAccessToken = getenv('LINE_CHANNEL_ACCESSTOKEN');
 $channelSecret = getenv('LINE_CHANNEL_SECRET');
@@ -54,6 +55,21 @@ foreach ($client->parseEvents() as $event) {
                 $client->replyMessage(array(
                     'replyToken' => $event['replyToken'],
                     'messages' => WEB_MONEY
+                ));
+            } elseif ($data = 'perfectmoney' or $displayText = 'perfectmoney' ) {
+                $client->replyMessage(array(
+                    'replyToken' => $event['replyToken'],
+                    'messages' => PERFECT_MONEY
+                ));
+            } elseif ($data = 'neteller' or $displayText = 'neteller' ) {
+                $client->replyMessage(array(
+                    'replyToken' => $event['replyToken'],
+                    'messages' => NETELLER
+                ));
+            } elseif ($data = 'skrill' or $displayText = 'skrill' ) {
+                $client->replyMessage(array(
+                    'replyToken' => $event['replyToken'],
+                    'messages' => SKRILL
                 ));
             } 
             break;
